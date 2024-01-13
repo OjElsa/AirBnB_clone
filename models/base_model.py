@@ -4,13 +4,22 @@
 from uuid import uuid4
 from datetime import datetime
 
+
 class BaseModel():
     """"BaseModel class"""
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Intialize a new BaseModel class"""
+        timeft = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
+
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    self.__dict__[key] = datetime.strptime(value, timeft)
+                else:
+                    self.__dict__[key] = value
 
     def __str__(self):
         """return the representstion string of the BaseModel instance"""
@@ -18,7 +27,7 @@ class BaseModel():
         return ("[{}] ({}) {})".format(className, self.id, self.__dict__))
 
     def save(self):
-        """updates public instance attribute updated_at with current datetime"""
+        """update public instance attribute updated_at with current datetime"""
         self.updated_at = datetime.now()
 
     def to_dict(self):
