@@ -49,11 +49,11 @@ class TestBaseModel(unittest.TestCase):
                     self.bsm_str.id,
                     {k: v for k, v in self.bsm_str.__dict__.items() if k != 'updated_at'}
                 )
-        actual_str = str(self.bsm_str)
+        actual_str = str(base_obj)
         print(expected_str)
         print(actual_str)
         print(self.bsm_str.updated_at)
-        print(datetime.strptime(actual_str.split('\'updated_at\': ')[1].split(',')[0], "'%Y-%m-%d %H:%M:%S.%f'"))
+        print(datetime.strptime(actual_str.split('\'updated_at\': ')[1].split(',')[0], "datetime.datetime(%y"))
         self.assertEqual(expected_str, actual_str)
 
     def test_to_dict(self):
