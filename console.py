@@ -10,6 +10,7 @@ from shlex import split
 from models import storage
 from models import base_model
 from models import FileStorage
+from models.user import User
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
