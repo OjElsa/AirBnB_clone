@@ -18,6 +18,8 @@ class HBNBCommand(cmd.Cmd):
     """Command Interparator Class"""
 
     prompt = "(hbnb) "
+    storage = FileStorage()
+    storage.reload()
     classes = {
             "BaseModel",
     }
