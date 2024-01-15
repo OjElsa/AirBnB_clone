@@ -5,12 +5,16 @@ import json
 import inspect
 from models import base_model
 from models.base_model import BaseModel
-
+from models.user import User
 
 class FileStorage:
     """Representation of a file data storage engine"""
     __file_path = "file.json"
     __objects = {}
+    classes = {
+            "BaseModel": BaseModel,
+            "User": User,
+    }
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -36,8 +40,7 @@ class FileStorage:
                 for o in objdict.values():
                     clsname = o["__class__"]
                     del o["__class__"]
-                    cls = getattr(base_model, clsname)
-                    self.new(cls(**o))
+                    self.new(eval(clsname)(**o))
         except FileNotFoundError:
             return
 

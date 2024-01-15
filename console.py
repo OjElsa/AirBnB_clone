@@ -21,7 +21,8 @@ class HBNBCommand(cmd.Cmd):
     storage = FileStorage()
     storage.reload()
     classes = {
-            "BaseModel",
+            "BaseModel": BaseModel,
+            "User": User,
     }
 
     def emptyline(self):
