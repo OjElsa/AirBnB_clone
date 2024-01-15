@@ -2,6 +2,8 @@
 """serializes instances to JSON file and deserializes JSON file"""
 
 import json
+import inspect
+from models import base_model
 from models.base_model import BaseModel
 
 
@@ -17,7 +19,7 @@ class FileStorage:
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id."""
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        FileStorage._objects[key] = obj
 
     def save(self):
         """serialize _objects to the JSON file __file_path"""
@@ -34,7 +36,12 @@ class FileStorage:
                 for o in objdict.values():
                     clsname = o["__class__"]
                     del o["__class__"]
-                    cls = getattr(models, clsname)
+                    cls = getattr(base_model, clsname)
                     self.new(cls(**o))
         except FileNotFoundError:
             return
+
+    def classes(self):
+        """Return a dictionary of class names mapped to class objects."""
+        return {name: cls for name, cls in inspect.getmembers(base_model,
+            inspect.isclass)}
