@@ -6,18 +6,21 @@ import sys
 import cmd
 import json
 import shlex
+from shlex import split
 from models import storage
 from models import base_model
 from models import FileStorage
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
+
 class HBNBCommand(cmd.Cmd):
     """Command Interparator Class"""
 
     prompt = "(hbnb) "
-    storage = FileStorage()
-    storage.reload()
+    classes = {
+            "BaseModel",
+    }
 
     def emptyline(self):
         """Do nothing on empty line."""
@@ -42,7 +45,7 @@ class HBNBCommand(cmd.Cmd):
         if not hasattr(base_model, class_name):
             print("** class doesn't exist **")
             return
-        
+
         new_instance = getattr(base_model, class_name)()
         new_instance.save()
         print(new_instance.id)
@@ -74,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             key = args[0] + "." + args[1]
-            if key  not in storage.all():
+            if key not in storage.all():
                 print("** no innsatance found **")
             else:
                 del storage.all()[key]
@@ -82,16 +85,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Print all string represnaattion of all instance."""
-        args = shlex.split(line)
-        instances = HBNBCommand.storage.all()
-        if not args:
-            print([str(instance) for instance in instances.values()])
-        elif args[0] not in storage.classes():
+        args = split(line)
+        instances_dict = storage.all()
+        if args and args[0] not in self.classes:
             print("** class doesn't exist **")
-        else:
-            class_name = args[0]
-            print([str(instance) for key, instance in instances.items()
-                if instance.__class__.__name__ == class_name])
+            return
+        instances = []
+        for key, value in instances_dict.items():
+            if not args or args[0] == value.__class__.__name__:
+                instances.append(str(value))
+        print(instances)
 
     def do_update(self, line):
         """Update an instance based on the class name and id."""
@@ -113,7 +116,6 @@ class HBNBCommand(cmd.Cmd):
             instance = storage.all()[key]
             setattr(instance, args[2], args[3][1:-1])
             instance.save()
-
 
 
 if __name__ == '__main__':
