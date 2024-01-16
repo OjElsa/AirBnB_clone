@@ -17,9 +17,14 @@ class FileStorage:
     """Representation of a file data storage engine"""
     __file_path = "file.json"
     __objects = {}
-    classes = {
+    _valid_classes = {
             "BaseModel": BaseModel,
             "User": User,
+            "State": State,
+            "City": City,
+            "Place": Place,
+            "Amenity": Amenity,
+            "Review": Review
     }
 
     def all(self):
@@ -40,29 +45,14 @@ class FileStorage:
 
     def reload(self):
         """Deserialize the JSON file to __objects (only if file exists)."""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.place import Place
-        from models.amenity import Amenity
-        from models.review import Review
-        classes = {
-                "BaseModel": BaseModel,
-                "User": User,
-                "State": State,
-                "City": City,
-                "Place": Place,
-                "Amenity": Amenity,
-                "Review": Review
-        }
         try:
             with open(FileStorage.__file_path) as r:
                 objdict = json.load(r)
                 for o in objdict.values():
                     clsname = o["__class__"]
                     del o["__class__"]
-                    self.new(eval(clsname)(**o))
+                    if clsname in self._valid_classes:
+                        self.new(eval(clsname)(**o))
         except FileNotFoundError:
             return
 
