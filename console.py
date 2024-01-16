@@ -60,7 +60,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        new_instance = getattr(base_model, class_name)()
+        new_instance = self.classes[class_name]()
         new_instance.save()
         print(new_instance.id)
 
