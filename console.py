@@ -56,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = line.split()[0]
-        if not hasattr(base_model, class_name):
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
