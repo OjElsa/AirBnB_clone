@@ -12,6 +12,7 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """Representation of a file data storage engine"""
     __file_path = "file.json"
@@ -68,4 +69,4 @@ class FileStorage:
     def classes(self):
         """Return a dictionary of class names mapped to class objects."""
         return {name: cls for name, cls in inspect.getmembers(base_model,
-            inspect.isclass)}
+                inspect.isclass)}
