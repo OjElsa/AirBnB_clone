@@ -69,7 +69,7 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(line)
         if not args:
             print("** class name missing **")
-        elif args[0] not in storage.classes():
+        elif args[0] not in self.classes:
             print("** class does not exist **")
         elif len(args) == 1:
             print("** insatnce id missing **")
@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(line)
         if not args:
             print("** class name missing **")
-        elif args[0] not in storage.classes():
+        elif args[0] not in storage._valid_classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(line)
         if not args:
             print("** class name missing **")
-        elif args[0] not in storage.classes():
+        elif args[0] not in storage._valid_classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** inastance id issing **")
