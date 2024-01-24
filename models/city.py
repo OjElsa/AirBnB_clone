@@ -18,5 +18,6 @@ class City(BaseModel):
     @classmethod
     def all(cls, storage):
         """Return a list of all instance of the class."""
-        return [instance for instance in storage.all().values() if isinstance
-                (instance, cls)]
+        instances = storage.all().values()
+        return [f"{instance} {instance.id}" for instance in instances if 
+                isinstance(instance, cls)]
