@@ -92,7 +92,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             key = args[0] + "." + args[1]
             if key not in storage.all():
-                print("** no innsatance found **")
+                print("** no instance found **")
             else:
                 del storage.all()[key]
                 storage.save()
@@ -104,10 +104,7 @@ class HBNBCommand(cmd.Cmd):
         if args and args[0] not in self.classes:
             print("** class doesn't exist **")
             return
-        instances = []
-        for key, value in instances_dict.items():
-            if not args or args[0] == value.__class__.__name__:
-                instances.append(str(value))
+        instances = self.classes[args[0]].all()
         print(instances)
 
     def do_update(self, line):
