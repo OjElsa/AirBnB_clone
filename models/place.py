@@ -32,3 +32,9 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
+
+    @classmethod
+    def all(cls, storage):
+        """Return a list of all instances of the class."""
+        return [instance for instance in storage.all().values() if isinstance
+                (instance, cls)]

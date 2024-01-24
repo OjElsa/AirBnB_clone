@@ -18,3 +18,9 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
+
+    @classmethod
+    def all(cls, storage):
+        """Return a list of all instances of the class."""
+        return [instance for instance in storage.all().values() if isinstance
+                (instance, cls)]
